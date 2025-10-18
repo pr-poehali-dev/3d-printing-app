@@ -19,10 +19,10 @@ const models = [
 ];
 
 const materials = [
-  { name: 'PLA', price: 1.0, strength: 3, flexibility: 2, detail: 4 },
-  { name: 'ABS', price: 1.2, strength: 4, flexibility: 3, detail: 3 },
-  { name: 'PETG', price: 1.5, strength: 5, flexibility: 4, detail: 4 },
-  { name: 'Resin', price: 2.5, strength: 3, flexibility: 1, detail: 5 },
+  { name: 'PLA', price: 1.0, strength: 3, flexibility: 2, detail: 4, color: '#0EA5E9' },
+  { name: 'ABS', price: 1.2, strength: 4, flexibility: 3, detail: 3, color: '#F97316' },
+  { name: 'PETG', price: 1.5, strength: 5, flexibility: 4, detail: 4, color: '#8B5CF6' },
+  { name: 'Resin', price: 2.5, strength: 3, flexibility: 1, detail: 5, color: '#D946EF' },
 ];
 
 const orders = [
@@ -39,6 +39,7 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState('catalog');
   const [is3DViewOpen, setIs3DViewOpen] = useState(false);
   const [viewingModel, setViewingModel] = useState(models[0]);
+  const [preview3DMaterial, setPreview3DMaterial] = useState(materials[0]);
 
   const calculatePrice = () => {
     const basePrice = selectedModel.price;
@@ -374,7 +375,31 @@ export default function Index() {
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4">
-            <ModelViewer3D modelType={viewingModel.modelType} color="#0EA5E9" />
+            <ModelViewer3D modelType={viewingModel.modelType} color={preview3DMaterial.color} />
+            <div className="glass-effect p-4 rounded-lg mt-4">
+              <div className="text-sm font-medium mb-3 flex items-center justify-between">
+                <span>Материал для предпросмотра</span>
+                <Badge variant="outline" className="font-heading">{preview3DMaterial.name}</Badge>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {materials.map((material) => (
+                  <button
+                    key={material.name}
+                    onClick={() => setPreview3DMaterial(material)}
+                    className={`h-12 rounded-lg border-2 transition-all ${
+                      preview3DMaterial.name === material.name
+                        ? 'border-white scale-105 shadow-lg'
+                        : 'border-border/50 hover:border-border hover:scale-102'
+                    }`}
+                    style={{ backgroundColor: material.color }}
+                  >
+                    <div className="text-xs font-semibold text-white drop-shadow-lg">
+                      {material.name}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="grid grid-cols-3 gap-4 mt-6">
               <div className="glass-effect p-4 rounded-lg text-center">
                 <div className="text-sm text-muted-foreground mb-1">Категория</div>
@@ -389,17 +414,32 @@ export default function Index() {
                 <div className="font-heading font-semibold text-primary">{viewingModel.price} ₽</div>
               </div>
             </div>
-            <Button 
-              className="w-full mt-6 bg-gradient-to-r from-primary to-secondary hover:opacity-90 h-12 text-base"
-              onClick={() => {
-                setSelectedModel(viewingModel);
-                setActiveTab('calculator');
-                setIs3DViewOpen(false);
-              }}
-            >
-              <Icon name="ShoppingCart" size={20} className="mr-2" />
-              Выбрать эту модель
-            </Button>
+            <div className="grid grid-cols-2 gap-3 mt-6">
+              <Button 
+                variant="outline"
+                className="h-12 text-base"
+                onClick={() => {
+                  setSelectedModel(viewingModel);
+                  setSelectedMaterial(preview3DMaterial);
+                  setActiveTab('calculator');
+                  setIs3DViewOpen(false);
+                }}
+              >
+                <Icon name="Settings" size={20} className="mr-2" />
+                Настроить печать
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 h-12 text-base"
+                onClick={() => {
+                  setSelectedModel(viewingModel);
+                  setSelectedMaterial(preview3DMaterial);
+                  setIs3DViewOpen(false);
+                }}
+              >
+                <Icon name="ShoppingCart" size={20} className="mr-2" />
+                Заказать
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

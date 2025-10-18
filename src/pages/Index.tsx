@@ -6,16 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import Icon from '@/components/ui/icon';
 import { Progress } from '@/components/ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import ModelViewer3D from '@/components/ModelViewer3D';
 
 const models = [
-  { id: 1, name: 'Gear Mechanism', category: 'Mechanical', price: 450, image: '⚙️', complexity: 'Medium', modelType: 'gear' },
-  { id: 2, name: 'Geometric Vase', category: 'Decor', price: 320, image: '🏺', complexity: 'Low', modelType: 'vase' },
-  { id: 3, name: 'Robot Arm', category: 'Robotics', price: 1200, image: '🦾', complexity: 'High', modelType: 'robot' },
-  { id: 4, name: 'Phone Stand', category: 'Accessories', price: 180, image: '📱', complexity: 'Low', modelType: 'phone-stand' },
-  { id: 5, name: 'Miniature House', category: 'Architecture', price: 890, image: '🏠', complexity: 'Medium', modelType: 'house' },
-  { id: 6, name: 'Dragon Figure', category: 'Art', price: 1500, image: '🐉', complexity: 'High', modelType: 'dragon' },
+  { id: 1, name: 'Gear Mechanism', category: 'Mechanical', price: 450, image: '⚙️', complexity: 'Medium' },
+  { id: 2, name: 'Geometric Vase', category: 'Decor', price: 320, image: '🏺', complexity: 'Low' },
+  { id: 3, name: 'Robot Arm', category: 'Robotics', price: 1200, image: '🦾', complexity: 'High' },
+  { id: 4, name: 'Phone Stand', category: 'Accessories', price: 180, image: '📱', complexity: 'Low' },
+  { id: 5, name: 'Miniature House', category: 'Architecture', price: 890, image: '🏠', complexity: 'Medium' },
+  { id: 6, name: 'Dragon Figure', category: 'Art', price: 1500, image: '🐉', complexity: 'High' },
 ];
 
 const materials = [
@@ -37,8 +35,6 @@ export default function Index() {
   const [infill, setInfill] = useState([20]);
   const [layerHeight, setLayerHeight] = useState([0.2]);
   const [activeTab, setActiveTab] = useState('catalog');
-  const [is3DViewOpen, setIs3DViewOpen] = useState(false);
-  const [viewingModel, setViewingModel] = useState(models[0]);
 
   const calculatePrice = () => {
     const basePrice = selectedModel.price;
@@ -138,14 +134,7 @@ export default function Index() {
                           {model.price} ₽
                         </div>
                       </div>
-                      <Button 
-                        className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setViewingModel(model);
-                          setIs3DViewOpen(true);
-                        }}
-                      >
+                      <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                         <Icon name="Eye" size={18} className="mr-2" />
                         Предпросмотр 3D
                       </Button>
@@ -357,52 +346,6 @@ export default function Index() {
           </TabsContent>
         </Tabs>
       </div>
-
-      <Dialog open={is3DViewOpen} onOpenChange={setIs3DViewOpen}>
-        <DialogContent className="max-w-4xl glass-effect border-2 border-primary/30">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-heading flex items-center gap-3">
-              <span className="text-4xl">{viewingModel.image}</span>
-              <div>
-                <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {viewingModel.name}
-                </div>
-                <div className="text-sm text-muted-foreground font-normal mt-1">
-                  Вращайте мышью • Зум колёсиком
-                </div>
-              </div>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="mt-4">
-            <ModelViewer3D modelType={viewingModel.modelType} color="#0EA5E9" />
-            <div className="grid grid-cols-3 gap-4 mt-6">
-              <div className="glass-effect p-4 rounded-lg text-center">
-                <div className="text-sm text-muted-foreground mb-1">Категория</div>
-                <div className="font-heading font-semibold">{viewingModel.category}</div>
-              </div>
-              <div className="glass-effect p-4 rounded-lg text-center">
-                <div className="text-sm text-muted-foreground mb-1">Сложность</div>
-                <div className="font-heading font-semibold">{viewingModel.complexity}</div>
-              </div>
-              <div className="glass-effect p-4 rounded-lg text-center">
-                <div className="text-sm text-muted-foreground mb-1">Цена</div>
-                <div className="font-heading font-semibold text-primary">{viewingModel.price} ₽</div>
-              </div>
-            </div>
-            <Button 
-              className="w-full mt-6 bg-gradient-to-r from-primary to-secondary hover:opacity-90 h-12 text-base"
-              onClick={() => {
-                setSelectedModel(viewingModel);
-                setActiveTab('calculator');
-                setIs3DViewOpen(false);
-              }}
-            >
-              <Icon name="ShoppingCart" size={20} className="mr-2" />
-              Выбрать эту модель
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

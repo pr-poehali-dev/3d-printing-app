@@ -1,4 +1,4 @@
-import { useRef, useState, Suspense } from 'react';
+import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
@@ -10,13 +10,11 @@ interface ModelViewer3DProps {
 
 function RotatingModel({ modelType, color = '#0EA5E9' }: ModelViewer3DProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const groupRef = useRef<THREE.Group>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   useFrame(() => {
-    const target = meshRef.current || groupRef.current;
-    if (target && !isHovered) {
-      target.rotation.y += 0.01;
+    if (meshRef.current && !isHovered) {
+      meshRef.current.rotation.y += 0.01;
     }
   });
 
@@ -68,7 +66,7 @@ function RotatingModel({ modelType, color = '#0EA5E9' }: ModelViewer3DProps) {
   if (modelType === 'house' || modelType === 'dragon') {
     return (
       <group
-        ref={groupRef}
+        ref={meshRef as any}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}
         scale={isHovered ? 1.1 : 1}
@@ -97,37 +95,27 @@ function RotatingModel({ modelType, color = '#0EA5E9' }: ModelViewer3DProps) {
   );
 }
 
-function Scene({ modelType, color }: ModelViewer3DProps) {
-  return (
-    <>
-      <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-      <OrbitControls 
-        enableZoom={true} 
-        enablePan={false}
-        minDistance={2}
-        maxDistance={8}
-        autoRotate={false}
-      />
-      
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={1} color="#0EA5E9" />
-      <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#8B5CF6" />
-      <pointLight position={[0, 5, 0]} intensity={0.8} color="#fff" />
-      
-      <RotatingModel modelType={modelType} color={color} />
-      
-      <gridHelper args={[10, 10, '#0EA5E9', '#1A1F2C']} position={[0, -2, 0]} />
-    </>
-  );
-}
-
 export default function ModelViewer3D({ modelType, color }: ModelViewer3DProps) {
   return (
     <div className="w-full h-[400px] rounded-xl overflow-hidden glass-effect">
       <Canvas>
-        <Suspense fallback={null}>
-          <Scene modelType={modelType} color={color} />
-        </Suspense>
+        <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+        <OrbitControls 
+          enableZoom={true} 
+          enablePan={false}
+          minDistance={2}
+          maxDistance={8}
+          autoRotate={false}
+        />
+        
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1} color="#0EA5E9" />
+        <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#8B5CF6" />
+        <pointLight position={[0, 5, 0]} intensity={0.8} color="#fff" />
+        
+        <RotatingModel modelType={modelType} color={color} />
+        
+        <gridHelper args={[10, 10, '#0EA5E9', '#1A1F2C']} position={[0, -2, 0]} />
       </Canvas>
     </div>
   );

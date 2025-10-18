@@ -40,7 +40,6 @@ export default function Index() {
   const [is3DViewOpen, setIs3DViewOpen] = useState(false);
   const [viewingModel, setViewingModel] = useState(models[0]);
   const [preview3DMaterial, setPreview3DMaterial] = useState(materials[0]);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const calculatePrice = () => {
     const basePrice = selectedModel.price;
@@ -80,12 +79,7 @@ export default function Index() {
                 3D Print Pro
               </h1>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="rounded-full hover:bg-primary/20"
-              onClick={() => setIsProfileOpen(true)}
-            >
+            <Button variant="ghost" size="icon" className="rounded-full">
               <Icon name="User" size={20} />
             </Button>
           </div>
@@ -94,7 +88,7 @@ export default function Index() {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-5 w-full mb-8 bg-card/50 p-1 glass-effect">
+          <TabsList className="grid grid-cols-4 w-full mb-8 bg-card/50 p-1 glass-effect">
             <TabsTrigger value="catalog" className="data-[state=active]:bg-primary data-[state=active]:text-white">
               <Icon name="Grid3x3" size={18} className="mr-2" />
               Каталог
@@ -110,10 +104,6 @@ export default function Index() {
             <TabsTrigger value="orders" className="data-[state=active]:bg-primary data-[state=active]:text-white">
               <Icon name="Package" size={18} className="mr-2" />
               Заказы
-            </TabsTrigger>
-            <TabsTrigger value="profile" className="data-[state=active]:bg-primary data-[state=active]:text-white">
-              <Icon name="UserCircle" size={18} className="mr-2" />
-              Профиль
             </TabsTrigger>
           </TabsList>
 
@@ -364,190 +354,6 @@ export default function Index() {
                   </div>
                 </Card>
               ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="profile" className="animate-fade-in">
-            <div className="max-w-4xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-3xl font-heading font-bold mb-2">Профиль</h2>
-                <p className="text-muted-foreground">Управляйте своим аккаунтом и настройками</p>
-              </div>
-
-              <div className="grid gap-6">
-                <Card className="gradient-border p-6">
-                  <div className="flex items-start gap-6">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl font-heading font-bold text-white neon-glow">
-                      АП
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-heading font-bold mb-2">Алексей Петров</h3>
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <Icon name="Mail" size={16} />
-                          alexey.petrov@example.com
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Icon name="Phone" size={16} />
-                          +7 (999) 123-45-67
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Icon name="MapPin" size={16} />
-                          Москва, Россия
-                        </div>
-                      </div>
-                      <Button variant="outline" className="mt-4">
-                        <Icon name="Edit" size={16} className="mr-2" />
-                        Редактировать профиль
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="gradient-border p-6">
-                  <h3 className="text-xl font-heading font-bold mb-4 flex items-center">
-                    <Icon name="BarChart3" size={24} className="mr-2 text-primary" />
-                    Статистика заказов
-                  </h3>
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="glass-effect p-4 rounded-lg text-center">
-                      <div className="text-3xl font-heading font-bold text-primary mb-1">12</div>
-                      <div className="text-sm text-muted-foreground">Всего заказов</div>
-                    </div>
-                    <div className="glass-effect p-4 rounded-lg text-center">
-                      <div className="text-3xl font-heading font-bold text-green-500 mb-1">9</div>
-                      <div className="text-sm text-muted-foreground">Завершено</div>
-                    </div>
-                    <div className="glass-effect p-4 rounded-lg text-center">
-                      <div className="text-3xl font-heading font-bold text-secondary mb-1">2</div>
-                      <div className="text-sm text-muted-foreground">В работе</div>
-                    </div>
-                    <div className="glass-effect p-4 rounded-lg text-center">
-                      <div className="text-3xl font-heading font-bold text-muted mb-1">1</div>
-                      <div className="text-sm text-muted-foreground">В очереди</div>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="gradient-border p-6">
-                  <h3 className="text-xl font-heading font-bold mb-4 flex items-center">
-                    <Icon name="History" size={24} className="mr-2 text-secondary" />
-                    История заказов
-                  </h3>
-                  <div className="space-y-3">
-                    {[
-                      { date: '15 окт 2024', model: 'Gear Mechanism', price: 540, status: 'completed' },
-                      { date: '12 окт 2024', model: 'Phone Stand', price: 216, status: 'completed' },
-                      { date: '08 окт 2024', model: 'Miniature House', price: 1335, status: 'completed' },
-                      { date: '05 окт 2024', model: 'Geometric Vase', price: 384, status: 'completed' },
-                      { date: '01 окт 2024', model: 'Dragon Figure', price: 1800, status: 'completed' },
-                    ].map((item, index) => (
-                      <div 
-                        key={index}
-                        className="glass-effect p-4 rounded-lg flex items-center justify-between hover:bg-primary/5 transition-colors"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                            <Icon name="Package" size={20} className="text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-heading font-semibold">{item.model}</div>
-                            <div className="text-sm text-muted-foreground">{item.date}</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="font-heading font-bold text-primary">{item.price} ₽</div>
-                          <Badge variant="outline" className="mt-1">
-                            <Icon name="Check" size={12} className="mr-1" />
-                            Завершено
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-
-                <Card className="gradient-border p-6">
-                  <h3 className="text-xl font-heading font-bold mb-4 flex items-center">
-                    <Icon name="Settings" size={24} className="mr-2 text-primary" />
-                    Настройки
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 glass-effect rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Icon name="Bell" size={20} className="text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">Уведомления о заказах</div>
-                          <div className="text-sm text-muted-foreground">Получать обновления по email</div>
-                        </div>
-                      </div>
-                      <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
-                        <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 shadow-lg"></div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-4 glass-effect rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Icon name="MessageSquare" size={20} className="text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">SMS-уведомления</div>
-                          <div className="text-sm text-muted-foreground">Статус печати на телефон</div>
-                        </div>
-                      </div>
-                      <div className="w-12 h-6 bg-muted rounded-full relative cursor-pointer">
-                        <div className="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 shadow-lg"></div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-4 glass-effect rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Icon name="Sparkles" size={20} className="text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">Рекомендации моделей</div>
-                          <div className="text-sm text-muted-foreground">Персональные предложения</div>
-                        </div>
-                      </div>
-                      <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
-                        <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 shadow-lg"></div>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="gradient-border p-6">
-                  <h3 className="text-xl font-heading font-bold mb-4 flex items-center">
-                    <Icon name="CreditCard" size={24} className="mr-2 text-secondary" />
-                    Способы оплаты
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="glass-effect p-4 rounded-lg flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
-                          VISA
-                        </div>
-                        <div>
-                          <div className="font-medium">•••• 4242</div>
-                          <div className="text-sm text-muted-foreground">Expires 12/25</div>
-                        </div>
-                      </div>
-                      <Badge variant="outline">По умолчанию</Badge>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      <Icon name="Plus" size={16} className="mr-2" />
-                      Добавить карту
-                    </Button>
-                  </div>
-                </Card>
-
-                <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1">
-                    <Icon name="HelpCircle" size={18} className="mr-2" />
-                    Поддержка
-                  </Button>
-                  <Button variant="outline" className="flex-1 text-destructive hover:bg-destructive/10">
-                    <Icon name="LogOut" size={18} className="mr-2" />
-                    Выйти
-                  </Button>
-                </div>
-              </div>
             </div>
           </TabsContent>
         </Tabs>
